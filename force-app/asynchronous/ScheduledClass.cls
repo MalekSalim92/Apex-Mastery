@@ -1,8 +1,8 @@
-public with sharing class ScheduledClass implements Schedulable,Finalizer,Database.AllowsCallouts
+public with sharing class ScheduledClass implements Schedulable,Database.AllowsCallouts
 {
-    private List<Account> accountList;
+    List<Account> accountList;
 
-    public void ScheduledClass(List<Account> accountList){
+    public ScheduledClass(List<Account> accountList){
         this.accountList = accountList;
     }
 
@@ -10,18 +10,12 @@ public with sharing class ScheduledClass implements Schedulable,Finalizer,Databa
     {
         for(Account acc : accountList)
         {
-            acc.Description = 'Sched';
+            acc.Description = String.valueOf(System.now());
         }
         update accountList;
-    }
+        AsyncService asyncClass = new AsyncService();
+        asyncClass.rescheduleMethod();
 
-    public void execute(FinalizerContext context)
-    {
-        for(Account acc : accountList)
-        {
-            acc.SicDesc =  String.valueOf(System.now());
-        }
-        update accountList;
     }
 
 }

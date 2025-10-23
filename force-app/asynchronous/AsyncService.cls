@@ -14,12 +14,12 @@ public with sharing class AsyncService
         }
     }
 
-    public void ScheduleMethod()
+    private void scheduleMethod()
     {
         List<Account> accountList = [SELECT Id,Description,SicDesc FROM Account];
         if(!accountList.isEmpty())
         {
-            ScheduledClass schedClass = new ScheduledClass();
+            ScheduledClass schedClass = new ScheduledClass(accountList);
             Datetime oneMinuteFromNow = system.now().addMinutes(ONE_MINUTE);
             String cronExp = oneMinuteFromNow.second() + ' ' + oneMinuteFromNow.minute() + ' ' +
                              oneMinuteFromNow.hour() + ' ' + oneMinuteFromNow.day() + ' ' +
@@ -27,6 +27,21 @@ public with sharing class AsyncService
                             
             System.schedule(SCHED_NAME, cronExp, schedClass);
         }
+    }
+
+    public void rescheduleMethod()
+    {
+        List<CronJobDetail> cronJob = [SELECT Id FROM CronJobDetail WHERE Name = :SCHED_NAME LIMIT 1];
+        if(!cronJob.isEmpty())
+        {
+            List<CronTrigger> cronTrigger = [SELECT Id FROM CronTrigger WHERE CronJobDetailId = :cronJob[0].Id LIMIT 1];
+            if(!cronTrigger.isEmpty())
+            {
+                scheduleMethod();
+                System.abortJob(cronTrigger[0].Id);
+            }
+        }
+
     }
     
 }
