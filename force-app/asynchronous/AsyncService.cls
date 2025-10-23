@@ -23,7 +23,7 @@ public with sharing class AsyncService
             Datetime oneMinuteFromNow = system.now().addMinutes(ONE_MINUTE);
             String cronExp = oneMinuteFromNow.second() + ' ' + oneMinuteFromNow.minute() + ' ' +
                              oneMinuteFromNow.hour() + ' ' + oneMinuteFromNow.day() + ' ' +
-                            oneMinuteFromNow.month() + ' ' + oneMinuteFromNow.year();
+                            oneMinuteFromNow.month() + ' ? ' + oneMinuteFromNow.year();
                             
             System.schedule(SCHED_NAME, cronExp, schedClass);
         }
