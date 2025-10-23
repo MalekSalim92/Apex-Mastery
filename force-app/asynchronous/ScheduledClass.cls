@@ -19,7 +19,7 @@ public with sharing class ScheduledClass implements Schedulable,Finalizer,Databa
     {
         for(Account acc : accountList)
         {
-            acc.SicDesc = 'Finalizer';
+            acc.SicDesc =  String.valueOf(System.now());
         }
         update accountList;
     }
