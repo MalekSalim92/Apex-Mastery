@@ -43,5 +43,13 @@ public with sharing class AsyncService
         }
 
     }
+
+
+    public void callBatchMethod()
+    {
+        String query = 'SELECT ID FROM Account';
+        BatchClass batch = new BatchClass(query);
+        Database.executeBatch(batch,200);
+    }
     
 }
