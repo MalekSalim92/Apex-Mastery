@@ -3,6 +3,8 @@ public with sharing class AsyncService
     private static final Integer ONE_MINUTE = 1;
     private static final String SCHED_NAME = 'SCHEDULED DEMO';
 
+    // QUEUE 
+
     public void callQueueableMethod()
     {
 
@@ -13,6 +15,8 @@ public with sharing class AsyncService
             System.enqueueJob(QueueClass);
         }
     }
+
+    // SCHEDULE 
 
     private void scheduleMethod()
     {
@@ -29,6 +33,8 @@ public with sharing class AsyncService
         }
     }
 
+        // RESCHEDULE 
+
     public void rescheduleMethod()
     {
         List<CronJobDetail> cronJob = [SELECT Id FROM CronJobDetail WHERE Name = :SCHED_NAME LIMIT 1];
@@ -44,12 +50,28 @@ public with sharing class AsyncService
 
     }
 
+    // BATCH 
 
     public void callBatchMethod()
     {
         String query = 'SELECT ID FROM Account';
         BatchClass batch = new BatchClass(query);
         Database.executeBatch(batch,200);
+    }
+
+    // CHANGE DATA CAPTURE
+
+    public void changeDataCapture(List<AccountChangeEvent> aceList)
+    {            
+        System.debug('::::: CDC STARTED ::::: ');
+
+        for(AccountChangeEvent ace : aceList){
+            EventBus.ChangeEventHeader aceHeader = ace.ChangeEventHeader;
+            System.debug('HEADER ::::: ' + aceHeader);
+            List<String> recordIds = aceHeader.getRecordIds();
+            System.debug('recordIds ::::: ' + recordIds);
+
+        }
     }
     
 }
