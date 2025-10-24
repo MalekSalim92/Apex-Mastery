@@ -1,7 +1,6 @@
 public with sharing class PartitionCacheController 
 {
-        private static final String ACCOUNT_CACHE_KEY = 'local.TacoPartition.cachedAccounts';
-        private static final Integer CACHE_TIMEOUT = 600;
+
         @AuraEnabled 
         public static void storeAccountToCache()
         {
@@ -27,14 +26,14 @@ public with sharing class PartitionCacheController
 
         public static List<Account> getAccounts()
         {
-            List<Account> cachedAccounts = (List<Account>) Cache.Org.get(ACCOUNT_CACHE_KEY);
+            List<Account> cachedAccounts = (List<Account>) Cache.Org.get(Constants.ACCOUNT_CACHE_KEY);
             if(cachedAccounts != null)
             {
                 return cachedAccounts;
             }
 
             List<Account> dbAccounts = [SELECT Id FROM Account];
-            Cache.Org.put(ACCOUNT_CACHE_KEY,dbAccounts,CACHE_TIMEOUT);
+            Cache.Org.put(Constants.ACCOUNT_CACHE_KEY,dbAccounts,Constants.CACHE_TIMEOUT);
             return dbAccounts; 
 
         }
@@ -42,6 +41,6 @@ public with sharing class PartitionCacheController
         // to be called in each triggerHandler
         public void invalidateCache() 
         {
-            Cache.Org.remove(ACCOUNT_CACHE_KEY);
+            Cache.Org.remove(Constants.ACCOUNT_CACHE_KEY);
         }
     }

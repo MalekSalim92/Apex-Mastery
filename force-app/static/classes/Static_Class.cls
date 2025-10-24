@@ -1,6 +1,5 @@
 public with sharing class Static_Class 
 {
-
     public static String staticString = 'Im a static string';
     public String nonStaticString = 'Nope , not me';
 
