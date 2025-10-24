@@ -25,7 +25,7 @@ public with sharing class PartitionCacheController
         }
 
 
-        public List<Account> getAccounts()
+        public static List<Account> getAccounts()
         {
             List<Account> cachedAccounts = (List<Account>) Cache.Org.get(ACCOUNT_CACHE_KEY);
             if(cachedAccounts != null)
@@ -34,7 +34,7 @@ public with sharing class PartitionCacheController
             }
 
             List<Account> dbAccounts = [SELECT Id FROM Account];
-            Cache.Session.put(ACCOUNT_CACHE_KEY,dbAccounts,CACHE_TIMEOUT);
+            Cache.Org.put(ACCOUNT_CACHE_KEY,dbAccounts,CACHE_TIMEOUT);
             return dbAccounts; 
 
         }
