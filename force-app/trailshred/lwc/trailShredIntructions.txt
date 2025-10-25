@@ -1,0 +1,4 @@
+
+https://github.com/mihavd92/salesforce-trailshred-player-modified/blob/main/lwc/trailshredRecordForm/trailshredRecordForm.js
+
+apexclass missing
