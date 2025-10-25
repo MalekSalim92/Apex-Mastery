@@ -1,0 +1,12 @@
+sudo npm i uncrustify
+
+Install uncrustify VScode Extension
+
+cmd ctrl P (command palette) -> Open Settings(JSON)
+
+
+
+
+cmd ctrl P (command palette) -> uncrustify: create default config file
+
+not SURE WHY IT DIDNT WORK
