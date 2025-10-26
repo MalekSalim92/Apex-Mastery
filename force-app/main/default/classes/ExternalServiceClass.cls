@@ -1,18 +1,9 @@
 public with sharing class ExternalServiceClass {
-  public String endpoint;
-  public String token;
   public String method;
   public String tableId;
   public HttpResponse response;
-  public ExternalServiceClass(
-    String endpoint,
-    String method,
-    String token,
-    String tableId
-  ) {
-    this.endpoint = endpoint;
+  public ExternalServiceClass(String token, String tableId) {
     this.method = method;
-    this.token = token;
     this.tableId = tableId;
   }
   public ExternalServiceClass(HttpResponse response) {
