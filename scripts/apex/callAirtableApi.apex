@@ -1,0 +1,1 @@
+AirtableApiService.callApi('INVENTORY');
