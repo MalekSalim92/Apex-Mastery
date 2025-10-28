@@ -1,9 +1,7 @@
 public with sharing class AirtableApiService {
   public static void callApi(String tableName) {
     String tableId = getTableId(tableName);
-    HttpResponse response = getApiResponse(Constants.API_METHOD_GET, tableId);
-    System.debug('RESPONSE ::::: -> ' + response);
-    //Boolean isSuccessStatus = apiSuccessResponse(response);
+    HttpResponse response = getApiResponse(tableId);
   }
 
   private static String getTableId(String tableName) {
@@ -17,13 +15,17 @@ public with sharing class AirtableApiService {
     return Constants.AIRTABLE_TABLE_NAMES.get(tableName.toUpperCase());
   }
 
-  private static HttpResponse getApiResponse(String method, String tableId) {
-    ExternalServiceClass extService = new ExternalServiceClass(method, tableId);
-    return extService.callApi();
+  private static HttpResponse getApiResponse(String tableId) {
+    HttpClient airTableApi = new HttpClient(
+      Constants.AIRTABLE_NAMED_CREDENTIAL
+    );
+    return airTableApi.get(Constants.AIRTABLE_BASEID + '/v0/' + tableId);
   }
 
-  private static Boolean apiSuccessResponse(HttpResponse response) {
-    ExternalServiceClass extService = new ExternalServiceClass(response);
-    return extService.isSuccessStatus();
+  public static void schedule(String tableName) {
+    AirtableApiSchedulable sch = new AirtableApiSchedulable(tableName);
+    String schedName = 'Schedulable - ' + tableName;
+    String cron = '0 * * * *';
+    System.schedule(schedName, cron, sch);
   }
 }
