@@ -1,1 +1,1 @@
-OppCalculatorController_Separated.calculateOpp('Manager');
+OppCalculatorController_Separated.calculateOpp('CTO');
