@@ -1,77 +1,85 @@
-public with sharing class AsyncService 
-{
-    private static final Integer ONE_MINUTE = 1;
-    private static final String SCHED_NAME = 'SCHEDULED DEMO';
+public with sharing class AsyncService {
+  private static final Integer ONE_MINUTE = 1;
+  private static final String SCHED_NAME = 'SCHEDULED DEMO';
 
-    // QUEUE 
+  // QUEUE
 
-    public void callQueueableMethod()
-    {
-
-        List<Contact> contacts = [SELECT Id,firstName,lastName,Email FROM Contact];
-        if(!contacts.isEmpty())
-        {
-            QueueableClass QueueClass = new QueueableClass(contacts);
-            System.enqueueJob(QueueClass);
-        }
+  public void callQueueableMethod() {
+    List<Contact> contacts = [
+      SELECT Id, firstName, lastName, Email
+      FROM Contact
+    ];
+    if (!contacts.isEmpty()) {
+      QueueableClass QueueClass = new QueueableClass(contacts);
+      System.enqueueJob(QueueClass);
     }
+  }
 
-    // SCHEDULE 
+  // SCHEDULE
 
-    private void scheduleMethod()
-    {
-        List<Account> accountList = [SELECT Id,Description,SicDesc FROM Account];
-        if(!accountList.isEmpty())
-        {
-            ScheduledClass schedClass = new ScheduledClass(accountList);
-            Datetime oneMinuteFromNow = system.now().addMinutes(ONE_MINUTE);
-            String cronExp = oneMinuteFromNow.second() + ' ' + oneMinuteFromNow.minute() + ' ' +
-                             oneMinuteFromNow.hour() + ' ' + oneMinuteFromNow.day() + ' ' +
-                            oneMinuteFromNow.month() + ' ? ' + oneMinuteFromNow.year();
-                            
-            System.schedule(SCHED_NAME, cronExp, schedClass);
-        }
+  private void scheduleMethod() {
+    List<Account> accountList = [SELECT Id, Description, SicDesc FROM Account];
+    if (!accountList.isEmpty()) {
+      ScheduledClass schedClass = new ScheduledClass(accountList);
+      Datetime oneMinuteFromNow = system.now().addMinutes(ONE_MINUTE);
+      String cronExp =
+        oneMinuteFromNow.second() +
+        ' ' +
+        oneMinuteFromNow.minute() +
+        ' ' +
+        oneMinuteFromNow.hour() +
+        ' ' +
+        oneMinuteFromNow.day() +
+        ' ' +
+        oneMinuteFromNow.month() +
+        ' ? ' +
+        oneMinuteFromNow.year();
+
+      System.schedule(SCHED_NAME, cronExp, schedClass);
     }
+  }
 
-        // RESCHEDULE 
+  // RESCHEDULE
 
-    public void rescheduleMethod()
-    {
-        List<CronJobDetail> cronJob = [SELECT Id FROM CronJobDetail WHERE Name = :SCHED_NAME LIMIT 1];
-        if(!cronJob.isEmpty())
-        {
-            List<CronTrigger> cronTrigger = [SELECT Id FROM CronTrigger WHERE CronJobDetailId = :cronJob[0].Id LIMIT 1];
-            if(!cronTrigger.isEmpty())
-            {
-                scheduleMethod();
-                System.abortJob(cronTrigger[0].Id);
-            }
-        }
-
+  public void rescheduleMethod() {
+    List<CronJobDetail> cronJob = [
+      SELECT Id
+      FROM CronJobDetail
+      WHERE Name = :SCHED_NAME
+      LIMIT 1
+    ];
+    if (!cronJob.isEmpty()) {
+      List<CronTrigger> cronTrigger = [
+        SELECT Id
+        FROM CronTrigger
+        WHERE CronJobDetailId = :cronJob[0].Id
+        LIMIT 1
+      ];
+      if (!cronTrigger.isEmpty()) {
+        scheduleMethod();
+        System.abortJob(cronTrigger[0].Id);
+      }
     }
+  }
 
-    // BATCH 
+  // BATCH
 
-    public void callBatchMethod()
-    {
-        String query = 'SELECT ID FROM Account';
-        BatchClass batch = new BatchClass(query);
-        Database.executeBatch(batch,200);
+  public void callBatchMethod() {
+    String query = 'SELECT ID FROM Account';
+    BatchClass batch = new BatchClass(query);
+    Database.executeBatch(batch);
+  }
+
+  // CHANGE DATA CAPTURE
+
+  public void changeDataCapture(List<AccountChangeEvent> aceList) {
+    System.debug('::::: CDC STARTED ::::: ');
+
+    for (AccountChangeEvent ace : aceList) {
+      EventBus.ChangeEventHeader aceHeader = ace.ChangeEventHeader;
+      System.debug('HEADER ::::: ' + aceHeader);
+      List<String> recordIds = aceHeader.getRecordIds();
+      System.debug('recordIds ::::: ' + recordIds);
     }
-
-    // CHANGE DATA CAPTURE
-
-    public void changeDataCapture(List<AccountChangeEvent> aceList)
-    {            
-        System.debug('::::: CDC STARTED ::::: ');
-
-        for(AccountChangeEvent ace : aceList){
-            EventBus.ChangeEventHeader aceHeader = ace.ChangeEventHeader;
-            System.debug('HEADER ::::: ' + aceHeader);
-            List<String> recordIds = aceHeader.getRecordIds();
-            System.debug('recordIds ::::: ' + recordIds);
-
-        }
-    }
-    
+  }
 }
