@@ -1,7 +1,10 @@
 public with sharing class AirtableApiService {
-  public static void callApi(String tableName) {
+  public static String getAirtableRecords(String tableName, String offset) {
     String tableId = getTableId(tableName);
-    HttpResponse response = getApiResponse(tableId);
+    IairtableApi processor = (IairtableApi) AirtableApiFactory.getprocessor(
+      tableName
+    );
+    return processor.callApi(tableId, offset);
   }
 
   private static String getTableId(String tableName) {
@@ -15,17 +18,19 @@ public with sharing class AirtableApiService {
     return Constants.AIRTABLE_TABLE_NAMES.get(tableName.toUpperCase());
   }
 
-  private static HttpResponse getApiResponse(String tableId) {
+  public static HttpResponse getApiResponse(String tableId, String offset) {
     HttpClient airTableApi = new HttpClient(
       Constants.AIRTABLE_NAMED_CREDENTIAL
     );
-    return airTableApi.get(Constants.AIRTABLE_BASEID + '/v0/' + tableId);
+    return airTableApi.get(
+      '/v0/' + Constants.AIRTABLE_BASEID + '/' + tableId + '?offset=' + offset
+    );
   }
 
-  public static void schedule(String tableName) {
-    AirtableApiSchedulable sch = new AirtableApiSchedulable(tableName);
-    String schedName = 'Schedulable - ' + tableName;
-    String cron = '0 * * * *';
-    System.schedule(schedName, cron, sch);
-  }
+  // public static void schedule(String tableName) {
+  //   AirtableApiSchedulable sch = new AirtableApiSchedulable(tableName);
+  //   String schedName = 'Schedulable - ' + tableName;
+  //   String cron = '0 * * * *';
+  //   System.schedule(schedName, cron, sch);
+  // }
 }

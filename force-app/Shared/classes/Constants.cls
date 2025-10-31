@@ -6,10 +6,10 @@ public class Constants {
   public static final String AIRTABLE_BASEID = 'appgbIeQEKZzNr0O1';
   public static final String AIRTABLE_PRODUCTS = 'tblUNaHQZPXdSpWo4';
   public static final String AIRTABLE_INVENTORY = 'tblXHmIUIBK9PWF0j';
-  public static final String AIRTABLE_NAMED_CREDENTIAL = 'Airtable_Named_Credential';
+  public static final String AIRTABLE_NAMED_CREDENTIAL = 'AirtableApi_NamedCredential';
 
   public static final Map<String, String> AIRTABLE_TABLE_NAMES = new Map<String, String>{
-    'INVENTORY' => 'tblUNaHQZPXdSpWo4',
+    'INVENTORY' => 'tblXHmIUIBK9PWF0j',
     'PRODUCT' => 'tblUNaHQZPXdSpWo4'
   };
   public static final String API_METHOD_GET = 'GET';
