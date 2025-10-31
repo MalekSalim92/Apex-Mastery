@@ -27,10 +27,10 @@ public with sharing class AirtableApiService {
     );
   }
 
-  // public static void schedule(String tableName) {
-  //   AirtableApiSchedulable sch = new AirtableApiSchedulable(tableName);
-  //   String schedName = 'Schedulable - ' + tableName;
-  //   String cron = '0 * * * *';
-  //   System.schedule(schedName, cron, sch);
-  // }
+  public static void schedule(String tableName) {
+    AirtableApiSchedulable sch = new AirtableApiSchedulable(tableName);
+    String schedName = 'Schedulable - ' + tableName;
+    String cron = '0 0 * * * ?';
+    System.schedule(schedName, cron, sch);
+  }
 }

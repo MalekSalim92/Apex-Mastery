@@ -1,2 +1,2 @@
-AirtableApiService.schedule('Product');
-AirtableApiService.schedule('Inventory');
+AirtableApiService.schedule('PRODUCT');
+AirtableApiService.schedule('INVENTORY');

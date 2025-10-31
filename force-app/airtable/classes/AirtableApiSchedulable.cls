@@ -4,7 +4,7 @@ public with sharing class AirtableApiSchedulable implements schedulable {
     this.tableName = tableName;
   }
   public void execute(SchedulableContext sc) {
-    AirtableApiQueue queue = new AirtableApiQueue(tableName);
+    AirtableApiQueue queue = new AirtableApiQueue(tableName, '');
     System.EnqueueJob(queue);
   }
 }
