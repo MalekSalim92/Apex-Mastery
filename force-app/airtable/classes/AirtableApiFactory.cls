@@ -1,9 +1,12 @@
 public with sharing class AirtableApiFactory {
-  private static Map<String, Type> implementationsByName = new Map<String, Type>{
-    'PRODUCT' => AirtableApiProduct.class,
-    'INVENTORY' => AirtableApiInventory.class
+  private static Map<String, String> implementationsByName = new Map<String, String>{
+    'PRODUCT' => 'AirtableApiProduct',
+    'INVENTORY' => 'AirtableApiInventory'
   };
-  public static IairtableApi getProcessor(String tableName) {
-    return (IairtableApi) implementationsByName.get(tableName).newInstance();
+  public static IairtableApi getInstance(String tableName) {
+    IairtableApi airtable = null;
+    Type t = Type.forName(implementationsByName.get(tableName));
+    airtable = (IairtableApi) t.newInstance();
+    return airtable;
   }
 }

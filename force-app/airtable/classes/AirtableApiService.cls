@@ -1,9 +1,7 @@
 public with sharing class AirtableApiService {
   public static String getAirtableRecords(String tableName, String offset) {
     String tableId = getTableId(tableName);
-    IairtableApi processor = (IairtableApi) AirtableApiFactory.getprocessor(
-      tableName
-    );
+    IairtableApi processor = AirtableApiFactory.getInstance(tableName);
     return processor.callApi(tableId, offset);
   }
 
