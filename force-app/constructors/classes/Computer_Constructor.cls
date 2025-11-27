@@ -14,8 +14,7 @@ public with sharing class Computer_Constructor
     }
 
     public void printType()
-    {
-        System.debug(computer_type);
+    {System.debug(computer_type);
 
     }
 
