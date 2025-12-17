@@ -38,10 +38,7 @@
       "eslint"
     ],
     "**/lwc/**": [
-      "sfdx-lwc-jest -- --bail --findRelatedTests --passWithNoTests"
+        "sfdx-lwc-jest -- --bail --findRelatedTests --passWithNoTests"
     ]
-  },
-  "dependencies": {
-    "uncrustify": "^0.6.1"
   }
 }
