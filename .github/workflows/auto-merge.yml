@@ -29,4 +29,3 @@ jobs:
           git fetch origin $SOURCE_BRANCH
           git merge origin/$SOURCE_BRANCH --no-ff -m "Auto-merge: $SOURCE_BRANCH to main"
           git push origin main
-          git push origin --delete $SOURCE_BRANCH
