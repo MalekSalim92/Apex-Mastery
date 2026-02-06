@@ -11,7 +11,8 @@ public with sharing class AsyncService {
     ];
     if (!contacts.isEmpty()) {
       QueueableClass QueueClass = new QueueableClass(contacts);
-      System.enqueueJob(QueueClass);
+      Integer delayInMinutes = 7;
+      System.enqueueJob(QueueClass, delayInMinutes);
     }
   }
 
