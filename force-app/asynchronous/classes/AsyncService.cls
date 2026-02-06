@@ -10,9 +10,31 @@ public with sharing class AsyncService {
       FROM Contact
     ];
     if (!contacts.isEmpty()) {
-      QueueableClass QueueClass = new QueueableClass(contacts);
       Integer delayInMinutes = 7;
-      System.enqueueJob(QueueClass, delayInMinutes);
+      System.enqueueJob(new QueueableClass(contacts), delayInMinutes);
+    }
+  }
+  //todo QUEUE
+  public void callQueueableMethodWithDuplication() {
+    List<Contact> contacts = [
+      SELECT Id, firstName, lastName, Email
+      FROM Contact
+    ];
+    if (!contacts.isEmpty()) {
+      AsyncOptions options = new AsyncOptions();
+      options.DuplicateSignature = new System.QueueableDuplicateSignature.Builder()
+        .addId(UserInfo.getUserId())
+        .addString('MyQueueable')
+        .build();
+      try {
+        System.enqueueJob(new QueueableClass(contacts), options);
+      } catch (DuplicateMessageException ex) {
+        //Exception is thrown if there is already an enqueued job with the same signature
+        Assert.areEqual(
+          'Attempt to enqueue job with duplicate queueable signature',
+          ex.getMessage()
+        );
+      }
     }
   }
 
