@@ -14,6 +14,12 @@ public with sharing class apexExceptionClass {
     }
   }
 
+  @future
+  public static void callFuture() {
+    System.debug('CALLING FUTURE METHDO');
+    FutureMethod.process();
+  }
+
   public static void createException(String msg) {
     Exception__c ex = new Exception__c(Error_Msg__c = msg);
     insert ex;
