@@ -31,6 +31,21 @@ public with sharing class CurrencyService {
         String label = System.Label.translationExists('',name,language) ? System.label.get('',name,language) : fallback;
         return label;
     }
+
+    @AuraEnabled
+    public static List<Opportunity> getOpportunities(){
+        Opportunity opp = [SELECT Id,Name,Amount,format(Amount) amm,CurrencyIsoCode FROM Opportunity WHERE Amount = 400 limit 1];
+        System.debug(opp.Amount);
+        System.debug(opp.get('amm'));
+        return SelectAll();
+    }
+
+    private static List<Opportunity> SelectAll(){
+        return [SELECT Id,Name,format(Amount) amm2,format(ConvertCurrency(Amount)) amm, ConvertCurrency(Amount) ammNoFormat,Amount,CurrencyIsoCode FROM Opportunity];
+    }
+
+
+
     
     public class Info{
         @AuraEnabled public String defaultCurrency;
