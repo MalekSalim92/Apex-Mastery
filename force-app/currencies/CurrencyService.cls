@@ -3,14 +3,16 @@ public with sharing class CurrencyService {
     @AuraEnabled (cacheable = true)
     public static Info getGeneralInfo(){
         
+        String localeLabel = 'Locale Label in APEX';
+        String multiCurrencyLabel = 'Multi Currency Label in APEX : ';
         
         System.debug(System.Label.Default_currency + '  ==>  ' + UserInfo.getDefaultCurrency());
-        System.debug(System.Label.Locale + '  ==>  ' + UserInfo.getLocale());
         System.debug(System.Label.language + '  ==>  ' + UserInfo.getLanguage());
-
-        System.debug('translationExists Locale : ' + System.Label.translationExists('','Locale','fr'));
-        System.debug('translationExists Multi : '  + System.Label.translationExists('','is_Multi_Currency','fr'));
-        System.debug(System.Label.is_Multi_Currency + '  ==>  ' + UserInfo.isMultiCurrencyOrganization());
+        
+        localeLabel = System.Label.translationExists('','Locale','fr') ? System.Label.get('','Locale') : localeLabel;
+        multiCurrencyLabel = System.Label.translationExists('','is_Multi_Currency','fr') ? System.Label.is_Multi_Currency : multiCurrencyLabel;
+        System.debug(localeLabel + '  ==>  ' + UserInfo.getLocale());
+        System.debug(multiCurrencyLabel + '  ==>  ' + UserInfo.isMultiCurrencyOrganization());
         Info information = new Info();
             information.defaultCurrency = UserInfo.getDefaultCurrency();
             information.locale = UserInfo.getLocale();
