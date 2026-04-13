@@ -1,9 +1,21 @@
 import { LightningElement,wire } from 'lwc';
 import getGeneralInfo from '@salesforce/apex/CurrencyService.getGeneralInfo';
+import getOpportunities from '@salesforce/apex/CurrencyService.getOpportunities';
+import LOCALE from '@salesforce/i18n/locale';
+import CURRENCY from '@salesforce/i18n/currency';
 export default class Currencies extends LightningElement {
-
+    CURRENCY = CURRENCY;
+    LOCALE = LOCALE;
+    columns = [
+    { label: 'Id', fieldName: 'Id' },
+    { label: 'Name', fieldName: 'Name' },
+    { label: 'Amount', fieldName: 'Amount' },
+    { label: 'format', fieldName: 'amm' },
+    { label: 'amm2', fieldName: 'amm2' },
+    { label: 'noFormat', fieldName: 'ammNoFormat' }
+    ];
     infoArray = [];
-
+    opps = [];
     // @wire(getGeneralInfo)
     // wiredInfo(data,error){
     //     if(data){
@@ -17,7 +29,8 @@ export default class Currencies extends LightningElement {
     // }
 
     connectedCallback(){
-        this.getInfo()
+        this.getInfo();
+        this.getOpps();
     }
 
             async getInfo(){
@@ -36,4 +49,13 @@ export default class Currencies extends LightningElement {
                 }
         }
 
+        async getOpps(){
+            try{
+                this.opps = await getOpportunities();
+                console.log('Opps : ' + JSON.stringify(this.opps))
+            }
+            catch{
+                console.error(error);
+            }
+        }
 }

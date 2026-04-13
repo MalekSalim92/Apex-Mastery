@@ -1,7 +1,15 @@
 <template>
     <lightning-card>
+        <h1> LOCALE : {LOCALE} - CURRENCY : {CURRENCY}</h1>
         <template for:each={infoArray} for:item="info" >
             <p key={info.id}>  {info.label} : {info.value}</p>
         </template>
+
+                <lightning-datatable
+                key-field="id"
+                data={opps}
+                columns={columns}>
+        </lightning-datatable>
+
     </lightning-card>
 </template>
