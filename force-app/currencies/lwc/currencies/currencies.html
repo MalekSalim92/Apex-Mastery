@@ -1,0 +1,7 @@
+<template>
+    <lightning-card>
+        <template for:each={infoArray} for:item="info" >
+            <p key={info.id}>  {info.label} : {info.value}</p>
+        </template>
+    </lightning-card>
+</template>
