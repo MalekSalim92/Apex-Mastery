@@ -1,0 +1,6 @@
+<apex:page standardController="Account" lightningStylesheets="true">
+    <apex:pageBlock title="Lookup Account">
+    <flow:interview name ="Screen_flow_welcome" buttonLocation="bottom">
+    </flow:interview>
+    </apex:pageBlock>
+</apex:page>
