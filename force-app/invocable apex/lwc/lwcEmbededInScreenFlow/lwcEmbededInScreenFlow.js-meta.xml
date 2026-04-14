@@ -6,7 +6,7 @@
     <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-    <targetConfig targets="lightning__FlowScreen">
+    <targetConfig targets="lightning__FlowScreen" configurationEditor="c-configuration-editor">
     <property name="age" role="inputOnly" label="age" type="integer"/>
     </targetConfig>
     </targetConfigs>
