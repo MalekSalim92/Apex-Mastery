@@ -1,3 +1,3 @@
 trigger ContactTrigger on Contact (after insert) {
-    ContactTriggerHandler.afterInsert(trigger.new);
+   // ContactTriggerHandler.afterInsert(trigger.new);
     }
