@@ -117,6 +117,10 @@ public with sharing class SoqlService {
                 In high-volume orgs, it’s a "best practice" to wrap these queries in a try-catch block to handle that timeout gracefully
                 */
 
+
+                // ALL ROWS
+
+                List<Account> allAccounts = [SELECT Id, Name, IsDeleted FROM Account ALL ROWS]; // Find all accounts, even the ones in the Recycle Bin 
     }
     @AuraEnabled
     public static Integer testSoql(){
