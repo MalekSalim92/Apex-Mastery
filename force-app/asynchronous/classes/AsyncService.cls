@@ -79,8 +79,8 @@ public with sharing class AsyncService {
         LIMIT 1
       ];
       if (!cronTrigger.isEmpty()) {
-        scheduleMethod();
         System.abortJob(cronTrigger[0].Id);
+        scheduleMethod();
       }
     }
   }

@@ -5,6 +5,8 @@ public with sharing class QueueableClass implements Queueable, Finalizer, Databa
   }
 
   public void execute(QueueableContext context) {
+
+    System.attachFinalizer(this);
     for (Contact con : contactList) {
       con.FirstName = 'Queueable';
     }
@@ -12,5 +14,13 @@ public with sharing class QueueableClass implements Queueable, Finalizer, Databa
   }
 
   public void execute(FinalizerContext context) {
+
+    String jobId = context.getAsyncApexJobId();
+        
+        if (context.getResult() == ParentJobResult.SUCCESS) {
+            System.debug('Success: Updated ' + contactList.size() + ' contacts.');
+        } else {
+      System.enqueueJob(new QueueableClass(this.contactList));        }
+    }
   }
-}
+
